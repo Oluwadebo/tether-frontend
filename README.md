@@ -31,3 +31,6 @@ tailwind.config.js  design tokens (colors, fonts, animations)
 
 ## Design in one line
 Each conversation is a thread. Ultramarine means the AI holds it, persimmon means your team does, and straw means the AI is unsure.
+
+## Auth functions (in `lib/api.ts`)
+`login`, `register`, `getMe` and `logout`. Login and register store the token for you; every later request sends it automatically. Errors arrive as `ApiError` with a message that is safe to show the user.

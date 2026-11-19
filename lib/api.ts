@@ -35,4 +35,22 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 // ---- Backend actions (added step by step) ----
+export type User = { id: string; name: string; email: string; role: 'admin' | 'agent' };
+type AuthResponse = { token: string; user: User };
+
 export const health = () => request<{ ok: boolean; name: string }>('/api/health');
+
+export async function login(email: string, password: string) {
+  const data = await request<AuthResponse>('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+  token.set(data.token);
+  return data.user;
+}
+
+export async function register(name: string, email: string, password: string) {
+  const data = await request<AuthResponse>('/api/auth/register', { method: 'POST', body: JSON.stringify({ name, email, password }) });
+  token.set(data.token);
+  return data.user;
+}
+
+export const getMe = () => request<{ user: User }>('/api/auth/me').then((r) => r.user);
+export const logout = () => token.clear();
