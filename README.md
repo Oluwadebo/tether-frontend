@@ -11,19 +11,26 @@ The page should show the three typefaces and the color palette. If it does, setu
 ## Structure
 ```
 app/
-  layout.tsx       fonts and providers
-  providers.tsx    TanStack Query provider
-  globals.css      Tailwind import, design tokens (@theme), reduced-motion rule
-  page.tsx         redirects to /login
-  login/page.tsx   sign in and create account
-  floor/page.tsx   placeholder, replaced by the dashboard in a later step
+  layout.tsx          fonts and providers
+  providers.tsx       TanStack Query provider
+  globals.css         Tailwind import, design tokens (@theme), animations, reduced-motion rule
+  page.tsx            redirects to /login
+  login/page.tsx      sign in and create account
+  (app)/layout.tsx    signed-in shell: header, live thread strip, auth check
+  (app)/floor/page.tsx  the Floor dashboard
 components/
-  ThreadPanel.tsx  animated thread illustration on the login screen
-  LoginForm.tsx    tabs, fields, password eye toggle, errors
-  WakeGate.tsx     waiting screen while the free server wakes up
-  ThreadLoader.tsx branded loader used instead of "Loading..." text
+  ThreadPanel.tsx     animated thread illustration on the login screen
+  LoginForm.tsx       tabs, fields, password eye toggle, errors
+  WakeGate.tsx        waiting screen while the free server wakes up
+  ThreadLoader.tsx    small branded loader (buttons, full-screen waits)
+  ThreadSkeleton.tsx  list loading state: threads being drawn
+  FloorStrip.tsx      ribbon of every live thread
+  FloorSummary.tsx    key numbers written as sentences
+  Timeline.tsx        one thread per conversation, knots at handoffs
 lib/
-  api.ts           the only file that talks to the backend
+  api.ts              the only file that talks to the backend
+  hooks.ts            TanStack Query hooks (useMe, useConversations)
+  floor.ts            turns control history into drawable segments and summary numbers
 ```
 `lib/socket.ts` is added in a later step.
 

@@ -59,3 +59,21 @@ export async function register(name: string, email: string, password: string) {
 
 export const getMe = () => request<{ user: User }>('/api/auth/me').then((r) => r.user);
 export const logout = () => token.clear();
+
+// ---- Conversations ----
+export type Holder = 'ai' | 'human' | 'paused';
+export type Contact = { id: string; name: string; company?: string; plan?: string; value?: number };
+export type Conversation = {
+  id: string;
+  channel: 'web' | 'email' | 'whatsapp';
+  topic?: string;
+  status: Holder;
+  confidence: number;
+  control: { at: string; holder: Holder; reason?: string }[];
+  lastMessageAt: string;
+  lastMessagePreview?: string;
+  contact: Contact | null;
+};
+
+export const getConversations = () =>
+  request<{ conversations: Conversation[] }>('/api/conversations').then((r) => r.conversations);
