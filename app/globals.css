@@ -1,9 +1,33 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tether design tokens. Change the look here, not in components. */
+@theme {
+  --color-limestone: #E8E6E1; /* canvas */
+  --color-chalk: #F6F5F2;     /* surfaces */
+  --color-flint: #CFCBC3;     /* lines */
+  --color-ink: #141A17;       /* text */
+  --color-ultramarine: #2B3BE6; /* AI holds the thread */
+  --color-persimmon: #F2603C;   /* your team holds the thread */
+  --color-straw: #E5B93C;       /* AI is unsure */
+
+  --font-sans: var(--font-sans-face), system-ui, sans-serif;   /* customer voice */
+  --font-mono: var(--font-mono-face), ui-monospace, monospace; /* AI voice */
+  --font-serif: var(--font-serif-face), Georgia, serif;        /* team voice */
+
+  --animate-draw: draw 1.2s ease-out forwards;
+  --animate-knot: knot 0.5s ease-out both;
+  --animate-fray: fray 1.6s ease-in-out infinite;
+
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes knot { 0% { transform: scale(0.6); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+  @keyframes fray { 0%, 100% { stroke-dashoffset: 0; } 50% { stroke-dashoffset: 6; } }
+}
 
 body {
-  @apply bg-limestone font-sans text-ink antialiased;
+  background: var(--color-limestone);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Everything that moves must respect reduced-motion settings. */

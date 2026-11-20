@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { Instrument_Sans, JetBrains_Mono, Fraunces } from 'next/font/google';
 import Providers from './providers';
 
-const sans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans' });
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
-const serif = Fraunces({ subsets: ['latin'], variable: '--font-serif' });
+const sans = Instrument_Sans({ subsets: ['latin'], variable: '--font-sans-face' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono-face' });
+const serif = Fraunces({ subsets: ['latin'], variable: '--font-serif-face' });
 
 export const metadata: Metadata = { title: 'Tether' };
 

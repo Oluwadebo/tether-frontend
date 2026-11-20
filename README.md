@@ -1,6 +1,6 @@
 # Tether frontend
 
-Next.js (App Router), TypeScript and Tailwind CSS. Data fetching with TanStack Query, dialogs with Radix UI, icons from Lucide.
+Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS 4. Data fetching with TanStack Query, dialogs with Radix UI, icons from Lucide.
 
 ## Setup
 1. `npm install`
@@ -13,11 +13,11 @@ The page should show the three typefaces and the color palette. If it does, setu
 app/
   layout.tsx     fonts and providers
   providers.tsx  TanStack Query provider
-  globals.css    base styles, reduced-motion rule
+  globals.css    Tailwind import, design tokens (@theme), reduced-motion rule
   page.tsx       setup check (replaced soon)
 lib/
   api.ts         the only file that talks to the backend
-tailwind.config.js  design tokens (colors, fonts, animations)
+  (design tokens live in app/globals.css under @theme)
 ```
 `components/` and `lib/socket.ts` are added in later steps.
 
