@@ -11,15 +11,21 @@ The page should show the three typefaces and the color palette. If it does, setu
 ## Structure
 ```
 app/
-  layout.tsx     fonts and providers
-  providers.tsx  TanStack Query provider
-  globals.css    Tailwind import, design tokens (@theme), reduced-motion rule
-  page.tsx       setup check (replaced soon)
+  layout.tsx       fonts and providers
+  providers.tsx    TanStack Query provider
+  globals.css      Tailwind import, design tokens (@theme), reduced-motion rule
+  page.tsx         redirects to /login
+  login/page.tsx   sign in and create account
+  floor/page.tsx   placeholder, replaced by the dashboard in a later step
+components/
+  ThreadPanel.tsx  animated thread illustration on the login screen
+  LoginForm.tsx    tabs, fields, password eye toggle, errors
+  WakeGate.tsx     waiting screen while the free server wakes up
+  ThreadLoader.tsx branded loader used instead of "Loading..." text
 lib/
-  api.ts         the only file that talks to the backend
-  (design tokens live in app/globals.css under @theme)
+  api.ts           the only file that talks to the backend
 ```
-`components/` and `lib/socket.ts` are added in later steps.
+`lib/socket.ts` is added in a later step.
 
 ## Rules for this project
 - All backend calls live in `lib/api.ts`. No component calls `fetch` itself.
