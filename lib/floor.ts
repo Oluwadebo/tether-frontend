@@ -1,7 +1,17 @@
 import type { Conversation, Holder } from './api';
 
-export const WINDOW_MIN = 240; // the Floor shows the last four hours
+export const WINDOW_MIN = 120; // how far back the Floor looks. Change this one number to zoom in or out.
 export const UNSURE_BELOW = 0.6;
+
+const hours = WINDOW_MIN / 60;
+export const WINDOW_LABEL = Number.isInteger(hours) ? `${hours} ${hours === 1 ? 'hour' : 'hours'}` : `${WINDOW_MIN} minutes`;
+
+/** Axis labels, derived from WINDOW_MIN so they always match the drawing. */
+export const TICKS = ([0, 25, 50, 75, 100] as const).map((p) => {
+  const m = Math.round((WINDOW_MIN * (100 - p)) / 100);
+  const label = m === 0 ? 'now' : m % 60 === 0 ? `${m / 60}h` : `${m}m`;
+  return [p, p === 0 ? `${label} ago` : label] as const;
+});
 
 export type Segment = { holder: Holder; from: number; to: number; unsure?: boolean }; // percentages of the window
 export type Knot = { at: number; holder: Holder; reason?: string };

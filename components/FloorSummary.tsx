@@ -1,5 +1,5 @@
 import type { Conversation } from '@/lib/api';
-import { summarize } from '@/lib/floor';
+import { WINDOW_LABEL, summarize } from '@/lib/floor';
 
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 const AI = ({ children }: { children: React.ReactNode }) => <span className="font-mono text-[0.8em] text-ultramarine">{children}</span>;
@@ -15,7 +15,7 @@ export default function FloorSummary({ convos, now }: { convos: Conversation[]; 
         {s.paused > 0 && <>, and <span className="text-ink/50">{s.paused}</span> {plural(s.paused, 'is', 'are')} paused</>}.
       </p>
       <p className="max-w-3xl text-lg text-ink/70">
-        Over the last four hours the AI held <AI>{s.aiShare}%</AI> of thread time, and passed {s.handoffs}{' '}
+        Over the last {WINDOW_LABEL} the AI held <AI>{s.aiShare}%</AI> of thread time, and passed {s.handoffs}{' '}
         {plural(s.handoffs, 'conversation', 'conversations')} to <Team>your team</Team>.
       </p>
       {s.unsure.length > 0 && (

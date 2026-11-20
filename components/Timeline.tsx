@@ -1,7 +1,6 @@
 import type { Conversation, Holder } from '@/lib/api';
-import { buildThread, isUnsure } from '@/lib/floor';
+import { TICKS, buildThread, isUnsure } from '@/lib/floor';
 
-const TICKS = [[0, '4h ago'], [25, '3h'], [50, '2h'], [75, '1h'], [100, 'now']] as const;
 const fill: Record<Holder, string> = { ai: 'bg-ultramarine', human: 'bg-persimmon', paused: 'bg-flint' };
 const dashed = { backgroundImage: 'repeating-linear-gradient(90deg, var(--color-straw) 0 6px, transparent 6px 11px)' };
 
@@ -17,7 +16,7 @@ function Row({ c, now, index }: { c: Conversation; now: number; index: number })
   const delay = `${index * 90}ms`;
   return (
     <li id={c.id} className="scroll-mt-24 rounded-lg px-2 py-3 target:bg-chalk target:ring-1 target:ring-flint">
-      <div className="grid grid-cols-[11rem_1fr_5.5rem] items-center gap-4">
+      <div className="grid grid-cols-[14rem_1fr_6rem] items-center gap-4">
         <div className="min-w-0">
           <p className="truncate font-medium">{c.contact?.name ?? 'Unknown contact'}</p>
           <p className="truncate text-sm text-ink/60">{c.topic ?? c.contact?.company}</p>
@@ -41,11 +40,11 @@ function Row({ c, now, index }: { c: Conversation; now: number; index: number })
   );
 }
 
-/** One horizontal thread per conversation over the last four hours. Knots mark handoffs. */
+/** One horizontal thread per conversation over the Floor window. Knots mark handoffs. */
 export default function Timeline({ convos, now }: { convos: Conversation[]; now: number }) {
   return (
     <div>
-      <div className="grid grid-cols-[11rem_1fr_5.5rem] gap-4 px-2 pb-2" aria-hidden>
+      <div className="grid grid-cols-[14rem_1fr_6rem] gap-4 px-2 pb-2" aria-hidden>
         <span />
         <div className="relative h-4 font-mono text-[11px] text-ink/50">
           {TICKS.map(([p, label]) => (

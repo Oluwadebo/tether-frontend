@@ -4,7 +4,7 @@ export default function ThreadSkeleton({ rows = 6 }: { rows?: number }) {
   return (
     <div role="status" aria-label="Loading threads" className="space-y-6">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="grid grid-cols-[11rem_1fr_5.5rem] items-center gap-4">
+        <div key={i} className="grid grid-cols-[14rem_1fr_6rem] items-center gap-4">
           <div className="space-y-2">
             <div className="h-3 w-24 rounded-full bg-flint/70" />
             <div className="h-2.5 w-32 rounded-full bg-flint/40" />

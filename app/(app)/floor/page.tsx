@@ -4,6 +4,7 @@ import { useConversations } from '@/lib/hooks';
 import FloorSummary from '@/components/FloorSummary';
 import Timeline from '@/components/Timeline';
 import ThreadSkeleton from '@/components/ThreadSkeleton';
+import { WINDOW_LABEL } from '@/lib/floor';
 
 export default function FloorPage() {
   const { data, isPending, isError, refetch } = useConversations();
@@ -14,8 +15,8 @@ export default function FloorPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-10 px-6 py-10">
-      <p className="font-mono text-xs uppercase tracking-widest text-ink/50">The floor · last 4 hours</p>
+    <div className="mx-auto max-w-[90rem] space-y-10 px-6 py-10 lg:px-12">
+      <p className="font-mono text-xs uppercase tracking-widest text-ink/50">The floor · last {WINDOW_LABEL}</p>
 
       {isPending && (
         <>
