@@ -6,8 +6,9 @@ import { ApiError, login, register } from '@/lib/api';
 import ThreadLoader from './ThreadLoader';
 
 type Mode = 'login' | 'register';
-const field =
-  'w-full rounded-lg border border-flint bg-white px-3.5 py-2.5 text-base outline-offset-2 focus:outline-2 focus:outline-ultramarine';
+type Field = 'name' | 'email' | 'password';
+const base =
+  'w-full rounded-lg border bg-white px-3.5 py-2.5 text-base outline-offset-2 focus:outline-2 focus:outline-ultramarine';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -17,28 +18,45 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
+  const [badField, setBadField] = useState<Field | ''>('');
   const [busy, setBusy] = useState(false);
+
+  // Shows the message, marks the input that caused it, and moves focus there.
+  function fail(message: string, field?: string) {
+    setError(message);
+    const f = (['name', 'email', 'password'] as const).find((x) => x === field) ?? '';
+    setBadField(f);
+    if (f) document.getElementById(f)?.focus();
+  }
+  function clearFor(f: Field) {
+    if (badField === f) { setBadField(''); setError(''); }
+  }
+  const cls = (f: Field, extra = '') =>
+    `${base} ${extra} ${badField === f ? 'border-straw ring-2 ring-straw' : 'border-flint'}`;
 
   function switchMode(m: Mode) {
     setMode(m);
     setError('');
+    setBadField('');
   }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
-    if (mode === 'register' && !name.trim()) return setError('Tell us your name.');
-    if (!/^\S+@\S+\.\S+$/.test(email)) return setError('Enter a valid email address.');
-    if (mode === 'register' && password.length < 8) return setError('Use at least 8 characters for your password.');
-    if (!password) return setError('Enter your password.');
+    setBadField('');
+    if (mode === 'register' && !name.trim()) return fail('Tell us your name.', 'name');
+    if (!/^\S+@\S+\.\S+$/.test(email)) return fail('Enter a valid email address.', 'email');
+    if (!password) return fail('Enter your password.', 'password');
+    if (mode === 'register' && password.length < 8) return fail('Use at least 8 characters for your password.', 'password');
     setBusy(true);
     try {
       if (mode === 'login') await login(email, password);
       else await register(name.trim(), email, password);
       router.replace('/floor');
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Something went wrong. Try again.');
       setBusy(false);
+      if (err instanceof ApiError) fail(err.message, err.field);
+      else fail('Something went wrong. Try again.');
     }
   }
 
@@ -61,19 +79,21 @@ export default function LoginForm() {
           {mode === 'register' && (
             <div>
               <label htmlFor="name" className="mb-1.5 block text-sm font-medium">Name</label>
-              <input id="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={field} />
+              <input id="name" autoComplete="name" value={name} aria-invalid={badField === 'name'}
+                onChange={(e) => { setName(e.target.value); clearFor('name'); }} className={cls('name')} />
             </div>
           )}
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium">Email</label>
-            <input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={field} />
+            <input id="email" type="email" autoComplete="email" value={email} aria-invalid={badField === 'email'}
+              onChange={(e) => { setEmail(e.target.value); clearFor('email'); }} className={cls('email')} />
           </div>
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium">Password</label>
             <div className="relative">
-              <input id="password" type={show ? 'text' : 'password'} value={password}
+              <input id="password" type={show ? 'text' : 'password'} value={password} aria-invalid={badField === 'password'}
                 autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                onChange={(e) => setPassword(e.target.value)} className={`${field} pr-11`} />
+                onChange={(e) => { setPassword(e.target.value); clearFor('password'); }} className={cls('password', 'pr-11')} />
               <button type="button" onClick={() => setShow((s) => !s)} aria-label={show ? 'Hide password' : 'Show password'} aria-pressed={show}
                 className="absolute inset-y-0 right-0 grid w-11 place-items-center text-ink/60 hover:text-ink">
                 {show ? <EyeOff size={18} /> : <Eye size={18} />}

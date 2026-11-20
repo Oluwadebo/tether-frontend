@@ -25,11 +25,11 @@ export default function ThreadPanel() {
             <path d="M190 78 C260 86 270 130 300 130" strokeWidth="4" strokeDasharray="5 6" className="animate-fray stroke-straw" />
           </g>
           {/* Team thread continues from the knot */}
-          <path pathLength={1} d="M300 130 C335 130 350 92 392 92 S455 150 520 106" strokeWidth="4"
+          <path pathLength={1} d="M300 130 C335 130 350 92 392 92 S455 150 496 112" strokeWidth="4"
             className="animate-draw stroke-persimmon" style={draw('1.6s')} />
           <circle cx="300" cy="130" r="9" strokeWidth="3" className="animate-knot origin-center fill-chalk stroke-ink [animation-delay:1.6s] [transform-box:fill-box]" />
-          <text x="20" y="200" className="fill-ultramarine font-mono text-[13px]">AI · 94% sure</text>
-          <text x="400" y="190" className="fill-persimmon font-serif text-[16px]">Your team</text>
+          <text x="14" y="178" className="fill-ultramarine font-mono text-[13px]">AI · 94% sure</text>
+          <text x="364" y="74" className="fill-persimmon font-serif text-[16px]">Your team</text>
         </svg>
 
         <ul className="space-y-2 text-sm text-ink/70">

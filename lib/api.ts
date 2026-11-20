@@ -14,7 +14,7 @@ export const token = {
 };
 
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message: string, public field?: string) {
     super(message);
   }
 }
@@ -35,7 +35,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw new ApiError(0, "Can't reach the server. Check your connection and try again.");
   }
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new ApiError(res.status, body.error ?? 'Something went wrong');
+  if (!res.ok) throw new ApiError(res.status, body.error ?? 'Something went wrong', body.field);
   return body as T;
 }
 
