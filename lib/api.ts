@@ -77,3 +77,23 @@ export type Conversation = {
 
 export const getConversations = () =>
   request<{ conversations: Conversation[] }>('/api/conversations').then((r) => r.conversations);
+
+export type Message = {
+  id: string;
+  conversation: string;
+  from: 'customer' | 'ai' | 'agent';
+  text: string;
+  confidence?: number;
+  createdAt: string;
+};
+
+export const getConversation = (id: string) =>
+  request<{ conversation: Conversation; messages: Message[] }>(`/api/conversations/${id}`);
+
+export const sendMessage = (id: string, text: string) =>
+  request<{ message: Message }>(`/api/conversations/${id}/messages`, { method: 'POST', body: JSON.stringify({ text }) })
+    .then((r) => r.message);
+
+export const setControl = (id: string, holder: Holder) =>
+  request<{ conversation: Conversation }>(`/api/conversations/${id}/control`, { method: 'POST', body: JSON.stringify({ holder }) })
+    .then((r) => r.conversation);

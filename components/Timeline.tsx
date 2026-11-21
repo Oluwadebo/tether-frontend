@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Conversation, Holder } from '@/lib/api';
 import { TICKS, buildThread, isUnsure } from '@/lib/floor';
 
@@ -18,7 +19,7 @@ function Row({ c, now, index }: { c: Conversation; now: number; index: number })
     <li id={c.id} className="scroll-mt-24 rounded-lg px-2 py-3 target:bg-chalk target:ring-1 target:ring-flint">
       <div className="grid grid-cols-[14rem_1fr_6rem] items-center gap-4">
         <div className="min-w-0">
-          <p className="truncate font-medium">{c.contact?.name ?? 'Unknown contact'}</p>
+          <Link href={`/thread/${c.id}`} className="block truncate font-medium hover:text-ultramarine">{c.contact?.name ?? 'Unknown contact'}</Link>
           <p className="truncate text-sm text-ink/60">{c.topic ?? c.contact?.company}</p>
         </div>
         <div className="animate-reveal relative h-8" style={{ animationDelay: delay }} aria-hidden>

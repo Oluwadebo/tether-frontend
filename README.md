@@ -18,6 +18,7 @@ app/
   login/page.tsx      sign in and create account
   (app)/layout.tsx    signed-in shell: header, live thread strip, auth check
   (app)/floor/page.tsx  the Floor dashboard
+  (app)/thread/[id]/page.tsx  one live conversation
 components/
   ThreadPanel.tsx     animated thread illustration on the login screen
   LoginForm.tsx       tabs, fields, password eye toggle, errors
@@ -27,10 +28,16 @@ components/
   FloorStrip.tsx      ribbon of every live thread
   FloorSummary.tsx    key numbers written as sentences
   Timeline.tsx        one thread per conversation, knots at handoffs
+  MessageStream.tsx   messages beside the vertical thread, three voices
+  ControlSwitch.tsx   AI drives / Paused / I drive
+  ConfirmDialog.tsx   Radix dialog used for every confirmation
+  Composer.tsx        reply box, locked until your team holds the thread
+  ContactPanel.tsx    contact details and who-held-the-thread history
 lib/
   api.ts              the only file that talks to the backend
   hooks.ts            TanStack Query hooks (useMe, useConversations)
   floor.ts            turns control history into drawable segments and summary numbers
+  thread.ts           merges messages and handoffs into one stream
 ```
 `lib/socket.ts` is added in a later step.
 
