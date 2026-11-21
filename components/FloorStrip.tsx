@@ -25,7 +25,7 @@ function Mini({ c }: { c: Conversation }) {
 export default function FloorStrip() {
   const { data } = useConversations();
   return (
-    <nav aria-label="Live threads" className="flex min-h-[3.25rem] items-center gap-1 overflow-x-auto border-b border-flint bg-chalk px-4">
+    <nav aria-label="Live threads" className="flex min-h-[3.25rem] shrink-0 items-center gap-1 overflow-x-auto border-b border-flint bg-chalk px-4">
       {data ? data.map((c) => <Mini key={c.id} c={c} />) : Array.from({ length: 8 }).map((_, i) => (
         <div key={i} className="flex w-20 shrink-0 flex-col items-center gap-1.5 px-2 py-1" aria-hidden>
           <div className="animate-reveal h-1 w-14 rounded-full bg-flint" style={{ animationDelay: `${i * 90}ms`, animationIterationCount: 'infinite', animationDirection: 'alternate' }} />

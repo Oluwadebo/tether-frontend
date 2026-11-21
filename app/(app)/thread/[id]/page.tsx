@@ -35,10 +35,14 @@ export default function ThreadPage() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
   const { data, isPending, isError, error, refetch } = useConversation(id);
+  const typing = useTyping(id);
   const [confirmTakeOver, setConfirmTakeOver] = useState(false);
   const [controlError, setControlError] = useState('');
-  const end = useRef<HTMLDivElement>(null);
-  const typing = useTyping(id);
+
+  // The message list scrolls on its own; the page around it stays put.
+  const listRef = useRef<HTMLDivElement>(null);
+  const stickToBottom = useRef(true); // false while the reader has scrolled up through history
+  const shownCount = useRef(0);
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ['conversation', id] });
@@ -52,47 +56,60 @@ export default function ThreadPage() {
   const send = useMutation({ mutationFn: (text: string) => sendMessage(id, text), onSuccess: refresh });
 
   const items = useMemo(() => (data ? buildStream(data.conversation, data.messages) : []), [data]);
-  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [items.length, typing]);
+
+  function onScroll() {
+    const el = listRef.current;
+    if (el) stickToBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+  }
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el || !stickToBottom.current) return;
+    const firstLoad = shownCount.current === 0;
+    el.scrollTo({ top: el.scrollHeight, behavior: firstLoad ? 'auto' : 'smooth' });
+    shownCount.current = items.length;
+  }, [items.length, typing]);
 
   const convo = data?.conversation;
   const hint = convo?.status === 'paused' ? 'This thread is paused. Take it over to reply.' : 'The AI is holding this thread. Take it over to reply.';
   const notFound = isError && error instanceof ApiError && error.status === 404;
 
   return (
-    <div className="mx-auto grid max-w-[90rem] gap-10 px-6 py-6 lg:px-12 xl:grid-cols-[1fr_20rem]">
-      <section className="min-w-0">
-        <Link href="/floor" className="text-sm text-ink/60 hover:text-ink">← The floor</Link>
-
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-4 pb-6">
-          <div>
-            <h1 className="font-serif text-3xl">{convo ? (convo.contact?.name ?? 'Unknown contact') : <span className="inline-block h-8 w-56 rounded-full bg-flint/60" />}</h1>
-            {convo && <p className="mt-1 text-ink/60">{convo.topic}</p>}
+    <div className="mx-auto grid min-h-0 w-full max-w-[90rem] flex-1 grid-rows-[minmax(0,1fr)] gap-10 px-6 pt-6 lg:px-12 xl:grid-cols-[1fr_20rem]">
+      <section className="flex min-h-0 min-w-0 flex-col">
+        <div className="shrink-0">
+          <Link href="/floor" className="text-sm text-ink/60 hover:text-ink">← The floor</Link>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-4 pb-5">
+            <div>
+              <h1 className="font-serif text-3xl">{convo ? (convo.contact?.name ?? 'Unknown contact') : <span className="inline-block h-8 w-56 rounded-full bg-flint/60" />}</h1>
+              {convo && <p className="mt-1 text-ink/60">{convo.topic}</p>}
+            </div>
+            {convo && <ControlSwitch status={convo.status} disabled={control.isPending}
+              onChange={(h) => (h === 'human' ? setConfirmTakeOver(true) : control.mutate(h))} />}
           </div>
-          {convo && <ControlSwitch status={convo.status} disabled={control.isPending}
-            onChange={(h) => (h === 'human' ? setConfirmTakeOver(true) : control.mutate(h))} />}
+          {controlError && <p role="alert" className="mb-3 rounded-lg bg-straw/25 px-3 py-2 text-sm">{controlError}</p>}
         </div>
 
-        {controlError && <p role="alert" className="mb-4 rounded-lg bg-straw/25 px-3 py-2 text-sm">{controlError}</p>}
-
-        {isPending && <StreamSkeleton />}
-        {isError && (
-          <div role="alert" className="max-w-md space-y-3 rounded-xl border border-flint bg-chalk p-6">
-            <p className="font-serif text-2xl">{notFound ? 'That thread does not exist.' : 'The thread did not load.'}</p>
-            {!notFound && <button onClick={() => refetch()} className="rounded-lg bg-ink px-4 py-2 text-chalk hover:bg-ultramarine">Try again</button>}
-          </div>
-        )}
-        {convo && <MessageStream items={items} typing={typing} contactName={convo.contact?.name.split(' ')[0] ?? 'Customer'} />}
-        <div ref={end} />
+        <div ref={listRef} onScroll={onScroll} className="min-h-0 flex-1 overflow-y-auto pr-2">
+          {isPending && <StreamSkeleton />}
+          {isError && (
+            <div role="alert" className="max-w-md space-y-3 rounded-xl border border-flint bg-chalk p-6">
+              <p className="font-serif text-2xl">{notFound ? 'That thread does not exist.' : 'The thread did not load.'}</p>
+              {!notFound && <button onClick={() => refetch()} className="rounded-lg bg-ink px-4 py-2 text-chalk hover:bg-ultramarine">Try again</button>}
+            </div>
+          )}
+          {convo && <MessageStream items={items} typing={typing} contactName={convo.contact?.name.split(' ')[0] ?? 'Customer'} />}
+        </div>
 
         {convo && (
-          <div className="sticky bottom-0 mt-4 bg-limestone/90 pb-4 pt-3 backdrop-blur">
-            <Composer canReply={convo.status === 'human'} hint={hint} onSend={(t) => send.mutateAsync(t)} />
+          <div className="shrink-0 space-y-2 pb-4 pt-3">
+            <Composer canReply={convo.status === 'human'} hint={hint}
+              onSend={(t) => { stickToBottom.current = true; return send.mutateAsync(t); }} />
+            <DemoTools conversationId={id} />
           </div>
         )}
-        {convo && <DemoTools conversationId={id} />}
       </section>
 
-      <aside className="hidden xl:block">{convo && <ContactPanel c={convo} />}</aside>
+      <aside className="hidden min-h-0 overflow-y-auto pb-6 xl:block">{convo && <ContactPanel c={convo} />}</aside>
 
       <ConfirmDialog open={confirmTakeOver} onOpenChange={setConfirmTakeOver} busy={control.isPending}
         title="Take over this thread?" confirmLabel="Take over" onConfirm={() => control.mutate('human')}
