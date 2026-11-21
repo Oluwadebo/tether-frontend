@@ -97,3 +97,10 @@ export const sendMessage = (id: string, text: string) =>
 export const setControl = (id: string, holder: Holder) =>
   request<{ conversation: Conversation }>(`/api/conversations/${id}/control`, { method: 'POST', body: JSON.stringify({ holder }) })
     .then((r) => r.conversation);
+
+// ---- Demo helpers ----
+export const simulateCustomer = (id: string, text?: string) =>
+  request<{ message: Message }>(`/api/conversations/${id}/simulate`, { method: 'POST', body: JSON.stringify({ text }) })
+    .then((r) => r.message);
+
+export const resetDemo = () => request<{ ok: boolean }>('/api/demo/reset', { method: 'POST' });

@@ -1,6 +1,8 @@
 import type { Holder, Message } from '@/lib/api';
 import type { StreamItem } from '@/lib/thread';
 import { UNSURE_BELOW } from '@/lib/floor';
+import { GENERIC_REASONS } from '@/lib/thread';
+import ThreadLoader from './ThreadLoader';
 
 const rail: Record<Holder, string> = { ai: 'bg-ultramarine', human: 'bg-persimmon', paused: 'bg-flint' };
 const time = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -53,12 +55,12 @@ function HandoffLabel({ holder, reason, at }: { holder: Holder; reason?: string;
     : <span className="text-ink/60">Paused</span>;
   return (
     <p className="text-sm">
-      {label} <span className="text-ink/50">· {time(at)}{reason ? ` · ${reason}` : ''}</span>
+      {label} <span className="text-ink/50">· {time(at)}{reason && !GENERIC_REASONS.has(reason) ? ` · ${reason}` : ''}</span>
     </p>
   );
 }
 
-export default function MessageStream({ items, contactName }: { items: StreamItem[]; contactName: string }) {
+export default function MessageStream({ items, contactName, typing }: { items: StreamItem[]; contactName: string; typing?: boolean }) {
   return (
     <ol>
       {items.map((it, i) => (
@@ -73,6 +75,16 @@ export default function MessageStream({ items, contactName }: { items: StreamIte
           </div>
         </li>
       ))}
+      {typing && (
+        <li className="grid grid-cols-[2.25rem_1fr] gap-3" aria-live="polite">
+          <Rail color="bg-ultramarine" />
+          <div className="flex justify-end py-2">
+            <p className="flex items-center gap-2 rounded-2xl rounded-tr-sm bg-ultramarine/10 px-4 py-2.5 font-mono text-[13px] text-ultramarine">
+              <ThreadLoader className="w-8" label="AI is writing" />AI is writing…
+            </p>
+          </div>
+        </li>
+      )}
     </ol>
   );
 }

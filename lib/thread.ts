@@ -21,3 +21,6 @@ export function buildStream(c: Conversation, messages: Message[]): StreamItem[] 
   );
   return rows.sort((a, b) => a.t - b.t).map((r) => r.item);
 }
+
+/** Reasons that only repeat the label ("Handed back to the AI"). The UI hides them. */
+export const GENERIC_REASONS = new Set(['Handed back to the AI', 'Paused by the team', 'Conversation started']);

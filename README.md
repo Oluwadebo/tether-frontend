@@ -33,14 +33,15 @@ components/
   ConfirmDialog.tsx   Radix dialog used for every confirmation
   Composer.tsx        reply box, locked until your team holds the thread
   ContactPanel.tsx    contact details and who-held-the-thread history
+  DemoTools.tsx       speak as the customer to trigger the AI live
 lib/
   api.ts              the only file that talks to the backend
   hooks.ts            TanStack Query hooks (useMe, useConversations)
   floor.ts            turns control history into drawable segments and summary numbers
   thread.ts           merges messages and handoffs into one stream
+  socket.ts           the shared Socket.IO connection
+  realtime.ts         live updates written into the query cache, typing indicator
 ```
-`lib/socket.ts` is added in a later step.
-
 ## Rules for this project
 - All backend calls live in `lib/api.ts`. No component calls `fetch` itself.
 - Never use `window.confirm`, `alert` or `prompt`. Use a Radix dialog styled to match.

@@ -5,12 +5,14 @@ import { useParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ApiError, Holder, sendMessage, setControl } from '@/lib/api';
 import { useConversation } from '@/lib/hooks';
+import { useTyping } from '@/lib/realtime';
 import { buildStream } from '@/lib/thread';
 import MessageStream from '@/components/MessageStream';
 import ControlSwitch from '@/components/ControlSwitch';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import Composer from '@/components/Composer';
 import ContactPanel from '@/components/ContactPanel';
+import DemoTools from '@/components/DemoTools';
 
 function StreamSkeleton() {
   const bars = ['w-2/3', 'w-1/2', 'w-3/5', 'w-2/5'];
@@ -36,6 +38,7 @@ export default function ThreadPage() {
   const [confirmTakeOver, setConfirmTakeOver] = useState(false);
   const [controlError, setControlError] = useState('');
   const end = useRef<HTMLDivElement>(null);
+  const typing = useTyping(id);
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ['conversation', id] });
@@ -49,7 +52,7 @@ export default function ThreadPage() {
   const send = useMutation({ mutationFn: (text: string) => sendMessage(id, text), onSuccess: refresh });
 
   const items = useMemo(() => (data ? buildStream(data.conversation, data.messages) : []), [data]);
-  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [items.length]);
+  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [items.length, typing]);
 
   const convo = data?.conversation;
   const hint = convo?.status === 'paused' ? 'This thread is paused. Take it over to reply.' : 'The AI is holding this thread. Take it over to reply.';
@@ -78,7 +81,7 @@ export default function ThreadPage() {
             {!notFound && <button onClick={() => refetch()} className="rounded-lg bg-ink px-4 py-2 text-chalk hover:bg-ultramarine">Try again</button>}
           </div>
         )}
-        {convo && <MessageStream items={items} contactName={convo.contact?.name.split(' ')[0] ?? 'Customer'} />}
+        {convo && <MessageStream items={items} typing={typing} contactName={convo.contact?.name.split(' ')[0] ?? 'Customer'} />}
         <div ref={end} />
 
         {convo && (
@@ -86,6 +89,7 @@ export default function ThreadPage() {
             <Composer canReply={convo.status === 'human'} hint={hint} onSend={(t) => send.mutateAsync(t)} />
           </div>
         )}
+        {convo && <DemoTools conversationId={id} />}
       </section>
 
       <aside className="hidden xl:block">{convo && <ContactPanel c={convo} />}</aside>

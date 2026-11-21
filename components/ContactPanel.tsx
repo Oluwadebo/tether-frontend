@@ -1,4 +1,5 @@
 import type { Conversation, Holder } from '@/lib/api';
+import { GENERIC_REASONS } from '@/lib/thread';
 
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const time = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -28,7 +29,7 @@ export default function ContactPanel({ c }: { c: Conversation }) {
           {log.map((e, i) => (
             <li key={i} className="text-sm">
               <p>{label(e.holder)} <span className="text-ink/50">· {time(e.at)}</span></p>
-              {e.reason && <p className="text-ink/60">{e.reason}</p>}
+              {e.reason && !GENERIC_REASONS.has(e.reason) && <p className="text-ink/60">{e.reason}</p>}
             </li>
           ))}
         </ol>

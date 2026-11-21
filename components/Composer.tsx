@@ -42,7 +42,7 @@ export default function Composer({ canReply, hint, onSend }: Props) {
       )}
       <div className="flex items-end gap-3">
         <textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKeyDown} disabled={!canReply} rows={2}
-          aria-label="Reply" placeholder={canReply ? 'Write a reply. Enter sends, Shift+Enter adds a line.' : hint}
+          aria-label="Reply" placeholder={canReply ? 'Write a reply. Enter sends, Shift+Enter adds a line.' : 'Reply locked'}
           className="min-h-16 flex-1 resize-none rounded-xl border border-flint bg-white px-4 py-3 font-serif text-[17px] outline-offset-2 focus:outline-2 focus:outline-persimmon disabled:bg-limestone disabled:text-ink/50" />
         <button onClick={submit} disabled={!canReply || sending || !text.trim()}
           className="flex h-12 min-w-24 items-center justify-center rounded-xl bg-ink px-5 font-medium text-chalk hover:bg-persimmon disabled:opacity-40">
