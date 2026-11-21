@@ -1,7 +1,7 @@
 import type { Conversation, Holder } from './api';
 
 export const WINDOW_MIN = 120; // how far back the Floor looks. Change this one number to zoom in or out.
-export const UNSURE_BELOW = 0.6;
+export const UNSURE_BELOW = 0.7;
 
 const hours = WINDOW_MIN / 60;
 export const WINDOW_LABEL = Number.isInteger(hours) ? `${hours} ${hours === 1 ? 'hour' : 'hours'}` : `${WINDOW_MIN} minutes`;
