@@ -15,6 +15,8 @@ app/
   providers.tsx       TanStack Query provider
   globals.css         Tailwind import, design tokens (@theme), animations, reduced-motion rule
   page.tsx            redirects to /login
+  opengraph-image.png link preview image (WhatsApp, Slack, LinkedIn), also used as twitter-image.png
+  icon.svg            tab icon
   login/page.tsx      sign in and create account
   (app)/layout.tsx    signed-in shell: header, live thread strip, auth check
   (app)/floor/page.tsx  the Floor dashboard
