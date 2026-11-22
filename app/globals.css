@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-:root { color-scheme: light; }
 /* Tether design tokens. Change the look here, not in components. */
 @theme static {
   --color-limestone: #E8E6E1; /* canvas */

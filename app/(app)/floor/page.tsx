@@ -15,7 +15,7 @@ export default function FloorPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-[90rem] space-y-10 px-6 py-10 lg:px-12">
+    <div className="mx-auto max-w-[90rem] space-y-10 px-4 py-8 sm:px-6 sm:py-10 lg:px-12">
       <p className="font-mono text-xs uppercase tracking-widest text-ink/50">The floor · last {WINDOW_LABEL}</p>
 
       {isPending && (

@@ -74,13 +74,13 @@ export default function ThreadPage() {
   const notFound = isError && error instanceof ApiError && error.status === 404;
 
   return (
-    <div className="mx-auto grid min-h-0 w-full max-w-[90rem] flex-1 grid-rows-[minmax(0,1fr)] gap-10 px-6 pt-6 lg:px-12 xl:grid-cols-[1fr_20rem]">
+    <div className="mx-auto grid min-h-0 w-full max-w-[90rem] flex-1 grid-rows-[minmax(0,1fr)] gap-10 px-4 pt-4 sm:px-6 sm:pt-6 lg:px-12 xl:grid-cols-[1fr_20rem]">
       <section className="flex min-h-0 min-w-0 flex-col">
         <div className="shrink-0">
           <Link href="/floor" className="text-sm text-ink/60 hover:text-ink">← The floor</Link>
           <div className="mt-3 flex flex-wrap items-end justify-between gap-4 pb-5">
             <div>
-              <h1 className="font-serif text-3xl">{convo ? (convo.contact?.name ?? 'Unknown contact') : <span className="inline-block h-8 w-56 rounded-full bg-flint/60" />}</h1>
+              <h1 className="font-serif text-2xl sm:text-3xl">{convo ? (convo.contact?.name ?? 'Unknown contact') : <span className="inline-block h-8 w-56 rounded-full bg-flint/60" />}</h1>
               {convo && <p className="mt-1 text-ink/60">{convo.topic}</p>}
             </div>
             {convo && <ControlSwitch status={convo.status} disabled={control.isPending}

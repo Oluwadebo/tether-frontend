@@ -4,12 +4,12 @@ export default function ThreadSkeleton({ rows = 6 }: { rows?: number }) {
   return (
     <div role="status" aria-label="Loading threads" className="space-y-6">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="grid grid-cols-[14rem_1fr_6rem] items-center gap-4">
+        <div key={i} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 md:grid-cols-[14rem_1fr_6rem]">
           <div className="space-y-2">
             <div className="h-3 w-24 rounded-full bg-flint/70" />
             <div className="h-2.5 w-32 rounded-full bg-flint/40" />
           </div>
-          <div className="relative h-1 rounded-full bg-flint/30">
+          <div className="relative order-last col-span-2 h-1 rounded-full bg-flint/30 md:order-none md:col-span-1">
             <div className="animate-reveal absolute inset-y-0 left-0 rounded-full bg-flint"
               style={{ width: widths[i % widths.length], animationDelay: `${i * 120}ms`, animationIterationCount: 'infinite', animationDirection: 'alternate' }} />
           </div>

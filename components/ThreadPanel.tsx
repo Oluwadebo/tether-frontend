@@ -3,7 +3,7 @@ const draw = (delay: string) => ({ strokeDasharray: 1, strokeDashoffset: 1, anim
 
 export default function ThreadPanel() {
   return (
-    <section className="flex flex-col justify-between gap-10 p-8 lg:p-14">
+    <section className="flex flex-col justify-between gap-6 p-6 lg:gap-10 lg:p-14">
       <div className="flex items-center gap-2">
         <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
           <path d="M2 16 C6 16, 8 6, 12 12" className="stroke-ultramarine" />
@@ -13,10 +13,10 @@ export default function ThreadPanel() {
       </div>
 
       <div className="space-y-6">
-        <h1 className="max-w-md font-serif text-4xl leading-tight lg:text-5xl">Every conversation is a thread.</h1>
-        <p className="max-w-sm text-lg text-ink/70">See who is holding it, and take it the moment it matters.</p>
+        <h1 className="max-w-md font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">Every conversation is a thread.</h1>
+        <p className="hidden max-w-sm text-lg text-ink/70 sm:block">See who is holding it, and take it the moment it matters.</p>
 
-        <svg viewBox="0 0 520 220" className="w-full max-w-xl" fill="none" strokeLinecap="round" aria-hidden>
+        <svg viewBox="0 0 520 220" className="hidden w-full max-w-xl sm:block" fill="none" strokeLinecap="round" aria-hidden>
           {/* AI thread: solid while confident */}
           <path pathLength={1} d="M0 150 C90 150 120 70 190 78" strokeWidth="4"
             className="animate-draw stroke-ultramarine" style={{ ...draw('0.2s'), animationDuration: '1s' }} />
@@ -32,7 +32,7 @@ export default function ThreadPanel() {
           <text x="364" y="74" className="fill-persimmon font-serif text-[16px]">Your team</text>
         </svg>
 
-        <ul className="space-y-2 text-sm text-ink/70">
+        <ul className="hidden space-y-2 text-sm text-ink/70 lg:block">
           <li><span className="mr-2 inline-block h-2 w-6 rounded-full bg-ultramarine align-middle" />Ultramarine: the AI holds the thread</li>
           <li><span className="mr-2 inline-block h-2 w-6 rounded-full bg-straw align-middle" />Straw: the AI is unsure</li>
           <li><span className="mr-2 inline-block h-2 w-6 rounded-full bg-persimmon align-middle" />Persimmon: your team holds it</li>

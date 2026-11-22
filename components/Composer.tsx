@@ -45,7 +45,7 @@ export default function Composer({ canReply, hint, onSend }: Props) {
           aria-label="Reply" placeholder={canReply ? 'Write a reply. Enter sends, Shift+Enter adds a line.' : 'Reply locked'}
           className="min-h-16 flex-1 resize-none rounded-xl border border-flint bg-white px-4 py-3 font-serif text-[17px] outline-offset-2 focus:outline-2 focus:outline-persimmon disabled:bg-limestone disabled:text-ink/50" />
         <button onClick={submit} disabled={!canReply || sending || !text.trim()}
-          className="flex h-12 min-w-24 items-center justify-center rounded-xl bg-ink px-5 font-medium text-chalk hover:bg-persimmon disabled:opacity-40">
+          className="flex h-12 min-w-20 items-center justify-center rounded-xl bg-ink px-4 font-medium sm:min-w-24 sm:px-5 text-chalk hover:bg-persimmon disabled:opacity-40">
           {sending ? <ThreadLoader className="w-8 text-chalk" label="Sending" /> : 'Send'}
         </button>
       </div>

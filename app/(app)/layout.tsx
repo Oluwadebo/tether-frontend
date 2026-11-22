@@ -42,23 +42,23 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
   return (
     <div className="flex h-dvh flex-col">
-      <header className="flex shrink-0 items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-2">
+      <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3 sm:px-6">
+        <div className="flex shrink-0 items-center gap-2">
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
             <path d="M2 16 C6 16, 8 6, 12 12" className="stroke-ultramarine" />
             <path d="M12 12 C16 18, 18 8, 22 8" className="stroke-persimmon" />
           </svg>
           <span className="font-serif text-xl">Tether</span>
         </div>
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-1 text-[13px] sm:gap-4 sm:text-sm">
           <span role="status" className="flex items-center gap-1.5 font-mono text-xs text-ink/60">
             <span className={`h-2 w-2 rounded-full ${live ? 'bg-ultramarine' : 'animate-pulse bg-straw'}`} />
-            {live ? 'Live' : 'Reconnecting'}
+            <span className="sr-only sm:not-sr-only">{live ? 'Live' : 'Reconnecting'}</span>
           </span>
-          <span>{user.name} <span className="font-mono text-xs text-ink/50">{user.role}</span></span>
-          <button onClick={() => setConfirmReset(true)} className="rounded-lg px-3 py-1.5 text-ink/60 hover:text-ink">Reset demo</button>
+          <span className="hidden md:inline">{user.name} <span className="font-mono text-xs text-ink/50">{user.role}</span></span>
+          <button onClick={() => setConfirmReset(true)} className="whitespace-nowrap rounded-lg px-2 py-1.5 text-ink/60 hover:text-ink sm:px-3">Reset demo</button>
           <button onClick={() => { logout(); queryClient.clear(); router.replace('/login'); }}
-            className="rounded-lg border border-flint bg-chalk px-3 py-1.5 hover:border-ink">Sign out</button>
+            className="whitespace-nowrap rounded-lg border border-flint bg-chalk px-3 py-1.5 hover:border-ink">Sign out</button>
         </div>
       </header>
       <FloorStrip />

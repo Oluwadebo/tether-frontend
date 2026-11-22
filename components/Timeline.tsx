@@ -17,12 +17,12 @@ function Row({ c, now, index }: { c: Conversation; now: number; index: number })
   const delay = `${index * 90}ms`;
   return (
     <li id={c.id} className="scroll-mt-24 rounded-lg px-2 py-3 target:bg-chalk target:ring-1 target:ring-flint">
-      <div className="grid grid-cols-[14rem_1fr_6rem] items-center gap-4">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 md:grid-cols-[14rem_1fr_6rem]">
         <div className="min-w-0">
           <Link href={`/thread/${c.id}`} className="block truncate font-medium hover:text-ultramarine">{c.contact?.name ?? 'Unknown contact'}</Link>
           <p className="truncate text-sm text-ink/60">{c.topic ?? c.contact?.company}</p>
         </div>
-        <div className="animate-reveal relative h-8" style={{ animationDelay: delay }} aria-hidden>
+        <div className="animate-reveal relative order-last col-span-2 h-8 md:order-none md:col-span-1" style={{ animationDelay: delay }} aria-hidden>
           <div className="absolute inset-x-0 top-1/2 h-px bg-flint/60" />
           {[25, 50, 75].map((p) => <div key={p} className="absolute inset-y-1 w-px bg-flint/40" style={{ left: `${p}%` }} />)}
           {segments.map((s, i) => (
@@ -45,14 +45,14 @@ function Row({ c, now, index }: { c: Conversation; now: number; index: number })
 export default function Timeline({ convos, now }: { convos: Conversation[]; now: number }) {
   return (
     <div>
-      <div className="grid grid-cols-[14rem_1fr_6rem] gap-4 px-2 pb-2" aria-hidden>
-        <span />
+      <div className="grid grid-cols-1 gap-4 px-2 pb-2 md:grid-cols-[14rem_1fr_6rem]" aria-hidden>
+        <span className="hidden md:block" />
         <div className="relative h-4 font-mono text-[11px] text-ink/50">
           {TICKS.map(([p, label]) => (
-            <span key={p} className={`absolute ${p === 100 ? '-translate-x-full' : p === 0 ? '' : '-translate-x-1/2'}`} style={{ left: `${p}%` }}>{label}</span>
+            <span key={p} className={`absolute ${p === 100 ? '-translate-x-full' : p === 0 ? '' : '-translate-x-1/2'} ${p === 25 || p === 75 ? 'hidden sm:block' : ''}`} style={{ left: `${p}%` }}>{label}</span>
           ))}
         </div>
-        <span />
+        <span className="hidden md:block" />
       </div>
       <ul className="divide-y divide-flint">
         {convos.map((c, i) => <Row key={c.id} c={c} now={now} index={i} />)}
