@@ -89,7 +89,7 @@ export default function ThreadPage() {
           {controlError && <p role="alert" className="mb-3 rounded-lg bg-straw/25 px-3 py-2 text-sm">{controlError}</p>}
         </div>
 
-        <div ref={listRef} onScroll={onScroll} className="min-h-0 flex-1 overflow-y-auto pr-2">
+        <div ref={listRef} onScroll={onScroll} className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-2">
           {isPending && <StreamSkeleton />}
           {isError && (
             <div role="alert" className="max-w-md space-y-3 rounded-xl border border-flint bg-chalk p-6">

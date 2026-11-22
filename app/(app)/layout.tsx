@@ -41,7 +41,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return <div className="grid min-h-screen place-items-center text-ultramarine"><ThreadLoader className="w-24" label="Loading your floor" /></div>;
   }
   return (
-    <div className="flex h-dvh flex-col">
+    <div className="fixed inset-0 flex flex-col">
       <header className="flex shrink-0 items-center justify-between gap-2 px-4 py-3 sm:px-6">
         <div className="flex shrink-0 items-center gap-2">
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
@@ -62,7 +62,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <FloorStrip />
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">{children}</main>
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain">{children}</main>
 
       <ConfirmDialog open={confirmReset} onOpenChange={setConfirmReset} busy={resetting}
         title="Reset the demo data?" confirmLabel="Reset" onConfirm={doReset}
