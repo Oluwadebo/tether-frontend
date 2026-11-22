@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   return (
     <WakeGate>
-      <main className="grid min-h-screen lg:grid-cols-2">
+      <main className="grid min-h-screen auto-rows-min md:auto-rows-auto md:grid-cols-2">
         <ThreadPanel />
         <LoginForm />
       </main>

@@ -3,7 +3,7 @@ const draw = (delay: string) => ({ strokeDasharray: 1, strokeDashoffset: 1, anim
 
 export default function ThreadPanel() {
   return (
-    <section className="flex flex-col justify-between gap-6 p-6 lg:gap-10 lg:p-14">
+    <section className="flex flex-col justify-between gap-6 p-6 md:p-10 lg:gap-10 lg:p-14">
       <div className="flex items-center gap-2">
         <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
           <path d="M2 16 C6 16, 8 6, 12 12" className="stroke-ultramarine" />

@@ -61,7 +61,7 @@ export default function LoginForm() {
   }
 
   return (
-    <section className="grid place-items-center p-4 sm:p-6 lg:p-14">
+    <section className="grid place-items-center p-4 sm:p-6 md:p-10 lg:p-14">
       <div className="w-full max-w-md rounded-2xl border border-flint bg-chalk p-7 shadow-sm lg:p-9">
         <div role="tablist" aria-label="Account" className="mb-7 grid grid-cols-2 rounded-xl bg-limestone p-1 text-sm font-medium">
           {([['login', 'Sign in'], ['register', 'Create account']] as const).map(([m, label]) => (
